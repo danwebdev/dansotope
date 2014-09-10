@@ -22,9 +22,9 @@ function init() {
         'columns': 2
     }, ];
     options = {
-        maxWidth: 160,
+        maxWidth: 200,
         columns: columnsArray,
-        gutter: 5
+        gutter: -0.5
     };
 
     var $container = $(".dansotope-container").eq(0);
@@ -97,7 +97,7 @@ function layoutItemsInContainer($_items, $_container) {
             var row = Math.ceil((index + 1) / columns) - 1;
             var column = index - (row * columns);
 
-            $el.html("row: " + row + " \ncolumn: " + column + "\nwidth: " + Math.ceil(width));
+            //$el.html("row: " + row + " \ncolumn: " + column + "\nwidth: " + Math.ceil(width));
 
             positionItem(row, column, width);
         });
@@ -111,7 +111,13 @@ function layoutItemsInContainer($_items, $_container) {
 
 function positionItem(row, column, _width) {
 
+	var left = column * _width + column * options.gutter;
+	var top = row * _width + row * options.gutter;
+
+	console.log(_width);
+	console.log(top);
+
     $el.width(_width).height(_width);
-    $el.css('left', column * _width + column * options.gutter + "px");
-    $el.css('top', row * _width + row * options.gutter + "px");
+    $el.css('left', left + "px");
+    $el.css('top', top + "px");
 }
