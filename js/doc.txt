@@ -1,0 +1,36 @@
+2 layout modes (both responsive):
+
+-variable columns
+	this is the default mode. 
+	it is active as long as no columns array is supplied.
+
+
+	the only required parameter here is "max-width".
+	max-width is the maximum width an item should have.
+	in this mode dansotope creates so many columns, that a maximum number of tile fit in a row.
+	to avoid unwanted margins/gaps, tiles are scaled down a bit, but never scaled up.
+
+-fixed columns
+	this mode is activated by supplying a columns object to the opations.
+	the columns object contains an array of objects with breakpoints and corersponing numbers of columns.
+	for example:
+	[
+		{
+			'value' : 1400,
+			'columns' : 6
+		},
+		{
+			'value' : 800,
+			'columns' : 4
+		},
+		{
+			'value' : 400,
+			'columns' : 2
+		},
+	]
+
+	This means: 
+		as long as the container-width is below 400px use 2 columns and scale items (up or down) to fit.
+		as long as the container-width is between 400px and 800px use 4 columns and scale items (up or down) to fit.
+		as long as the container-width is below 400px use 2 columns and scale items (up or down) to fit.
+

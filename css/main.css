@@ -1,0 +1,16 @@
+.dansotope-container{
+    position: relative;
+}
+.dansotope-item{
+    margin: 0;
+    padding: 0;
+    
+    position: absolute;
+
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+
+    -webkit-transition: all 0.3s ease;
+
+}
