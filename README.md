@@ -8,5 +8,5 @@ Currently the grid only works with one-size grid items (all items share the same
 
 There will be 2(3?) layout-mode available:
 
- * ### 'fixed-item-width'
- * ### 'fixed-gutter-width' (currently implemented)
+ * 'fixed-item-width'
+ * 'fixed-gutter-width' (currently implemented)
