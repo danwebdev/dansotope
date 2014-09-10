@@ -93,7 +93,7 @@ function init(self) {
     options = {
         maxWidth: 200,
         columns: columnsArray,
-        gutter: -0.5
+        gutter: 5
     };
 
     var $container = self.element;
@@ -186,7 +186,17 @@ function positionItem(row, column, _width) {
     console.log(_width);
     console.log(top);
 
-    $el.width(_width).height(_width);
-    $el.css('left', left + "px");
-    $el.css('top', top + "px");
+    // $el.width(_width).height(_width);
+    // $el.css('left', left + "px");
+    // $el.css('top', top + "px");
+
+    $el.velocity({
+        left: left + "px",
+        top: top + "px",
+        width: _width + "px",
+        height: _width + "px"
+    }, {
+        duration: 600,
+        easing: [ 150, 15 ]
+    });
 }
