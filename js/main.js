@@ -22,12 +22,9 @@ function init() {
         'columns': 2
     }, ];
     options = {
-        minWidth: 60,
         maxWidth: 160,
-        minHeight: 60,
-        maxHeight: 90,
         columns: columnsArray,
-        gutter: 15
+        gutter: 5
     };
 
     var $container = $(".dansotope-container").eq(0);
@@ -49,34 +46,47 @@ function init() {
 }
 
 function layoutItemsInContainer($_items, $_container) {
+    containerWidth = $_container.width();
 
-	layoutInVarMode();
-	//layoutInFixedMode();
+    layoutInVarMode();
+    //layoutInFixedMode();
+
+    /*In this mode the grid always occupies the container's full width.
+	The maxWidth parameter determines how large the items will be at max.
+
+	*/
+
     function layoutInVarMode() {
-        //how many colums per row with maxWidth?
-        var columnsPerRow = Math.ceil($_container.width() / options.maxWidth);
-        var yGutterWidthTotal = (columnsPerRow-1) * options.gutter;
-        var yGutterWidthPerColumn = yGutterWidthTotal/columnsPerRow;
-        columnsPerRow = Math.ceil($_container.width() / (options.maxWidth + yGutterWidthPerColumn));
 
+        /*  how many columns are possible with max_width items + gutter?
+			(implementend by recursion, because calculating worked, but had unresolvable issues.)
+		*/
+        var columns = (function() {
+            var i = 0,
+                tWidth = 0;
 
-        var width = ($_container.width() / columnsPerRow) - yGutterWidthPerColumn;
+            function walk() {
+                tWidth += options.maxWidth;
+                i++;
+                if (0 !== i && 1 !== i) {
+                    tWidth += options.gutter;
+                }
+                if (tWidth <= containerWidth) {
 
+                    return walk();
+                } else {
+                    return i - 1;
+                }
+            }
+            return walk();
+        })();
+        columns++;
 
-        console.log(yGutterWidthPerColumn);
+        var yGutterWidthTotal = (columns - 1) * options.gutter,
+            yGutterWidthPerColumn = yGutterWidthTotal / columns,
+            width = ($_container.width() / columns) - yGutterWidthPerColumn;
 
-        console.log((columnsPerRow*width + yGutterWidthTotal)-$_container.width());
-
-
-        if (((columnsPerRow*width + yGutterWidthTotal)-$_container.width()) !== 0) {
-            yGutterWidthPerColumn = yGutterWidthTotal/columnsPerRow;
-            columnsPerRow = Math.ceil($_container.width() / (options.maxWidth + yGutterWidthPerColumn));
-            width = ($_container.width() / (columnsPerRow+0)) - yGutterWidthPerColumn;
-        }
-
-        if (options.maxWidth * $_items.length < $_container.width()) {
-            width = options.maxWidth;
-        }
+        console.log(columns);
 
         $_items.each(function(index, el) {
 
@@ -84,21 +94,24 @@ function layoutItemsInContainer($_items, $_container) {
             //DEBUG ONLY
             $el.css('background-color', $(el).data('cat'));
 
-            var row = Math.ceil((index + 1) / columnsPerRow) - 1;
-            var column = index - (row * columnsPerRow);
+            var row = Math.ceil((index + 1) / columns) - 1;
+            var column = index - (row * columns);
+
             $el.html("row: " + row + " \ncolumn: " + column + "\nwidth: " + Math.ceil(width));
 
-            moveItem(row, column, width);
+            positionItem(row, column, width);
         });
+
     }
 
     function layoutInFixedMode() {
-		return;
+        return;
     }
 }
 
-function moveItem(row, column, _width) {
+function positionItem(row, column, _width) {
+
     $el.width(_width).height(_width);
-    $el.css('left', column * _width + column*options.gutter + "px");
-    $el.css('top', row * _width + row*options.gutter+  "px");
+    $el.css('left', column * _width + column * options.gutter + "px");
+    $el.css('top', row * _width + row * options.gutter + "px");
 }
